@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch API</title>
+</head>
+<style>
+    body {
+        text-align: center;
+        margin-top: 30px;
+    }
+    h2 {
+        margin-bottom: 50px;
+    }
+    pre {
+        background-color: beige;
+        padding: 10px;
+        font-size: large;
+        display: inline-block;
+        text-align: left;
+    }
+</style>
+<body>
+    <h2>Fetch API Data</h2>
+    <pre id="apiData"></pre>
+
+    <script>
+        window.onload = function() {
+            fetch('https://jsonplaceholder.typicode.com/todos/1')
+                .then(response => response.json())
+                .then(json => {
+                    document.getElementById("apiData").textContent = JSON.stringify(json, null, 2);
+                });
+        };
+    </script>
+</body>
+</html>
