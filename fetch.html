@@ -16,50 +16,56 @@
             border-radius: 10px;
             display: inline-block;
             text-align: left;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            max-width: 300px;
+            margin-top: 20px;
         }
-        button {
+        button, select {
             margin: 10px;
             padding: 10px;
             border: none;
             cursor: pointer;
             border-radius: 5px;
         }
-        .btn-refresh { background-color: #007bff; color: white; }
-        .btn-delete { background-color: #dc3545; color: white; }
-        .btn-add { background-color: #28a745; color: white; }
+        .btn-refresh { background-color: blue; color: white; }
+        .btn-delete { background-color: red; color: white; }
     </style>
 </head>
 <body>
     <h2>Fetch API Data</h2>
+    <label for="userSelect">Select User ID: </label>
+    <select id="userSelect" onchange="fetchData()">
+        <option value="1">User 1</option>
+        <option value="2">User 2</option>
+        <option value="3">User 3</option>
+        <option value="4">User 4</option>
+        <option value="5">User 5</option>
+    </select>
+
     <div id="cardContainer"></div>
-    
+
     <script>
         function fetchData() {
-            fetch('https://jsonplaceholder.typicode.com/todos/1')
+            const userId = document.getElementById("userSelect").value;
+            fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
                 .then(response => response.json())
-                .then(json => displayData(json));
+                .then(data => displayData(data))
+                .catch(error => console.error("Error fetching data:", error));
         }
 
         function displayData(data) {
             const container = document.getElementById("cardContainer");
             container.innerHTML = `
                 <div class="card">
-                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                    <p><strong>Name:</strong> ${data.name}</p>
+                    <p><strong>Username:</strong> ${data.username}</p>
+                    <p><strong>Email:</strong> ${data.email}</p>
                     <button class="btn-refresh" onclick="fetchData()">Refresh</button>
                     <button class="btn-delete" onclick="deleteData()">Delete</button>
-                    <button class="btn-add" onclick="addData()">Add</button>
                 </div>
             `;
         }
 
         function deleteData() {
             document.getElementById("cardContainer").innerHTML = "";
-        }
-
-        function addData() {
-            alert("Add functionality can be implemented as needed.");
         }
 
         window.onload = fetchData;
